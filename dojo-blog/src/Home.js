@@ -1,13 +1,23 @@
+import { useState, useEffect } from "react";
+import BlogList from "./BlogList";
+
 const Home = () => {
-    const handleClick=()=>{
-        console.log("Hello");
-    }
-    return ( 
-        <div className="home">
-            <h2>Homepage</h2>
-            <button onClick={handleClick}>Click me</button>
-        </div>
-     );
-}
- 
+  const [blogs, setBlogs] = useState(null);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/blogs")
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setBlogs(data);
+      });
+  }, []);
+  return (
+    <div className="home">
+      {blogs && <BlogList blogs={blogs} title="All blogs" />}
+    </div>
+  );
+};
+
 export default Home;
